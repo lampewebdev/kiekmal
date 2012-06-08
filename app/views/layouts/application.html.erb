@@ -2,18 +2,37 @@
 <html>
 <head>
   <title>Kmwi</title>
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+      <script type="text/javascript">$(document).ready(function() {
+      initialize();
+    });</script>
 </head>
 <body>
+<body>
+     <div id="member">
 <% if current_user %>
-  Welcome <%= current_user.name %>!
-  <%= link_to "Sign Out", signout_path %>
+  Moin Moin <%= current_user.name %>
+  <%= link_to "Abmelden", signout_path %>
 <% else %>
-  <%= link_to "Sign in with facebook", "/auth/facebook" %>
+  <%= link_to "Anmelden mit Facebook", "/auth/facebook" %>
 <% end %>
-<%= yield %>
-
+    </div>
+     <div id="logo"><img src="/logo.png" width="200px" height="223px"></div>
+     <div id="buttons">
+         <div id="button"> <p><%= link_to "BENUTZER", '/user/' %> </p></div>
+         <div id="button"> <p><%= link_to "KARTEN", '/map/' %> </p> </div>
+         <div id="button"> <p><%= link_to 'KONTAKT', '/'%></p> </div>
+    </div>
+    <div id="map_canvas"></div>
+    <% if flash[:notice] %>
+        <div id="notice"><%= flash[:notice] %></div>
+    <% end %>
+    <div id="saerch"><input type="text" id="search_address" value=""/>
+<button onclick="search();">Auf der Karte Suchen</button></div>
+    <div id="content"> <%= yield %> </div>
+</body>
 </body>
 </html>

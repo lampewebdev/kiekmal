@@ -1,6 +1,19 @@
 Kmwi::Application.routes.draw do
 
 
+  get "user/edit"
+  get "user/destroy"
+  match "user/" => "user#index"
+  get "user/show"
+
+  get "map/create"
+  get "map/edit"
+  get "map/destroy"
+  match "map/" => "map#index"
+  get "map/show"
+  match "map/show/:id" => 'map#show'
+  put "map/getmarker"
+
   get "welcome/index"
 
   match "/auth/:provider/callback" => "sessions#create"

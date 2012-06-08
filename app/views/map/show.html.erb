@@ -1,0 +1,10 @@
+<%= stylesheet_link_tag "map" %>
+<script type="text/javascript">
+var mar = '<%= @marker.to_json.html_safe %>'
+showmap(mar)
+</script>
+<% @marker.each do |k,v| %>
+<div id=<%= k %> >
+			<%=  image_tag v["kategoriebild"].html_safe,:height => '32', :width => '32' %>
+</div>
+<% end %>
