@@ -1,6 +1,8 @@
 <%= stylesheet_link_tag "map" %>
-
-
+<script type="text/javascript">
+var mar = '<%= @marker.to_json.html_safe %>'
+showmap(mar)
+</script>
 <% if !(session[:user_id]==nil) %>
 <p><%= link_to "Neue Karte Anlegen", "/map/create/" %> </p>
 <% end %>

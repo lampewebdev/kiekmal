@@ -1,5 +1,8 @@
 class MapController < ApplicationController
   def create
+    kat = Kategorie.all
+    @kname = Array.new
+    kat.each { |e| @kname << e.name }
   end
 
   def edit
@@ -9,6 +12,17 @@ class MapController < ApplicationController
   end
 
   def index
+    tmp = Marker.order("RANDOM()").limit(20)
+    @marker = Hash.new;
+    tmp.each {|marker|
+    @marker[marker.name]=Hash["name",marker.name,
+                                    "lat",marker.lat,
+                                    "lng",marker.lng,
+                                    "beschreibung",marker.beschreibung,
+                                    "kategoriebild",marker.kategorie.bild,
+                                    "markerbild",marker.kategorie.markerbild,
+                                    "kategoriename",marker.kategorie.name]
+    }
   end
 
   def show
@@ -23,7 +37,6 @@ class MapController < ApplicationController
                                     "markerbild",marker.kategorie.markerbild,
                                     "kategoriename",marker.kategorie.name]
     }
-    
     session[:markers] = nil
   end
 
@@ -35,15 +48,10 @@ class MapController < ApplicationController
     @markers = params[:markers]
     @markers.each do |key,value|     
       m = Marker.new
-      puts value.inspect
-      puts "123123123123123123123"
-            puts "12312312312123"
-                  puts "12312312"
-                        puts "123"
       m.name = value[:title]
       m.lat = value[:lat]
       m.lng = value[:lng]
-      m.kategorie = Kategorie.find_by_id(1)
+      m.kategorie = Kategorie.find_by_name(value[:kategorie])
       m.save
       @map.markers << m
     end

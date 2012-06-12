@@ -6,6 +6,7 @@ class UserController < ApplicationController
   end
 
   def index
+  	@user = User.order("RANDOM()").limit(3)
   end
 
   def show

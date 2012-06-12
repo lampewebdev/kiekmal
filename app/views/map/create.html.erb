@@ -1,11 +1,13 @@
 <%= stylesheet_link_tag "map" %>
 <script> 
-initmapsfunctions();
+ //var a_javascript_array = new Array(<%= @kname.join(",").html_safe %>);
+ var ar = <%= @kname.to_json.html_safe %>
+initmapsfunctions(ar);
 savemap();
 </script>
 <div id="directionsPanel">
-	<div id="saveme">
-	Speichern
-	</div>
-
+<form id="form1">
+Map Name: <input id="mapname"type="text" name="mapname" value="" /><br />
+</form>
+<div id="saveme">speichern</div>
 </div>

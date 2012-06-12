@@ -35,7 +35,8 @@ var markernr;
 var marker;
 var markername = ""
 var infowindow = new google.maps.InfoWindow();
-
+var kategorie;
+var kates = "";
 google.maps.event.addListener(infowindow,'closeclick',function(){
   if(marker.getTitle()==null){
   infowindow.setContent(infowindowcontent);
@@ -59,19 +60,18 @@ function initialize() {
   map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 }
 
-function initmapsfunctions(){
+function initmapsfunctions(kate){
+  kategorie = kate
     $(document).ready(function(){
+      $.each(kategorie,function( intIndex, objValue ){ kates += '<option value="'+objValue+'">'+objValue+'</option>'});
+      $('#form1').append('<select id="katesmap">'+ kates +'</select>');
       google.maps.event.addListener(window.map, 'click', function(event) {
         infowindow.close();
         addMarker(event.latLng);});
     });
 }
 function addMarker(location) {
-markername = "marker"+markerscount+"form"
-   infowindowcontent = '<div id="titleform" >'+
-                        '<form> Title: <br><input id="'+markername+'" name="title" type="text" size="30" maxlength="30">'+
-                        '<input style="display:block" type="button" name="setmarkertitle" value="Naam" onclick="setMarkerTitle(marker)">'+
-                        '</form></div>';
+    markername = "marker"+markerscount
     marker = new google.maps.Marker({
     position: location,
     map: map,
@@ -79,36 +79,37 @@ markername = "marker"+markerscount+"form"
     visible: true
   });
   $('#directionsPanel').append('<div id=marker'+markerscount+'></div>');
+  infowindowcontent = '<div id="titleform" >'+
+                        '<form> Title: <br><input id="'+markername+'form" name="title" type="text" size="30" maxlength="30">'+
+                        '<select id="kates">'+ kates +'</select>'+
+                        '<input style="display:block" type="button" name="setmarkertitle" value="Naam" onclick="setMarkerTitle(marker)">'+
+                        '</form></div>';
   infowindow.setContent(infowindowcontent);
   infowindow.open(map,marker);
   google.maps.event.addListener(marker, 'dblclick', function(event) {
     this.setMap(null);
-    document.getElementById('directionsPanel').removeChild(child);
+   $('#'+markername).remove()
     markerzwischenspeicher.splice(markerzwischenspeicher.indexOf(marker),1);
   });
   markerzwischenspeicher.push(marker)
   markerscount +=1;
-
 }
-
 
 function setMarkerTitle(marker){
-var ele = '"#'+markername+'content"'
-if(!(marker.getTitle()=="undefined")){
-marker.setTitle(ele).val());
-$(ele).append(marker.getTitle());
-}
+  $('#'+markername).append($('#'+markername+'form').val());
+  marker.setTitle($('#'+markername+'form').val());
+  $('#'+markername).append('<div id=kat'+markername+'>' + $('#kates').val() + '</div>');
 }
 
 function jsonfiemarker(marker){
   for(var i=0,len=marker.length; value=marker[i], i<len; i++) {
-    var werte='{"title": "'+ value.getTitle() +'", "lat": "'+ value.getPosition().lat()+'","lng": "'+value.getPosition().lng()+'"}';
+    var werte='{"title": "'+ value.getTitle() +'", "lat": "'+ value.getPosition().lat()+'","lng": "'+value.getPosition().lng()+'","kategorie": "'+ $('#katmarker'+i).text().toString() +'"}';
     var js1 = JSON.parse(werte);
     var str ='"marker'+i+'" :' + werte;
     markers.push(str);
   };
-  
-  mymarker='{"markers":{' + markers + '}}'
+  mymarker='{"markers":{' + markers + '},"katesmap":"'+ $('#katesmap').val() +'", "mapname":"'+ $('#mapname').val() +'"}'
+    alert(mymarker)
   mymarker= JSON.parse(mymarker);
 };
 
@@ -117,6 +118,7 @@ function savemap(){
     $("#saveme").click(function () {
       if(markerzwischenspeicher[0] == "[object Object]"){
       jsonfiemarker(markerzwischenspeicher);
+      alert(mymarker);
         $.ajax({
           type: "PUT",
           url: "/map/getmarker/",
