@@ -11,28 +11,38 @@
     });</script>
 </head>
 <body>
-<body>
-     <div id="member">
-<% if current_user %>
-  Moin Moin <%= current_user.name %>
-  <%= link_to "Abmelden", signout_path %>
-<% else %>
-  <%= link_to "Anmelden mit Facebook", "/auth/facebook" %>
-<% end %>
-    </div>
-     <div id="logo"><img src="/logo.png" width="200px" height="223px"></div>
-     <div id="buttons">
-         <div id="button"> <p><%= link_to "BENUTZER", '/user/' %> </p></div>
-         <div id="button"> <p><%= link_to "KARTEN", '/map/' %> </p> </div>
-         <div id="button"> <p><%= link_to 'KONTAKT', '/'%></p> </div>
+
+     <div id="logo"><%= link_to image_tag("/logo.png", :width => "200", :height => "223px"), '/' %>
+      </div>
+     <div id="bottom">
+      <div id="wrapper">
+      <ul id="menu">
+        <li id="button"><%= link_to "BENUTZER", '/user/' %></li>
+        <li id="button"><%= link_to "KARTEN", '/map/' %></li>
+        <li id="button"><%= link_to 'KONTAKT', '/'%></li>
+      </ul>
+      <div id="content"> <%= yield %> </div>
+     </div>
     </div>
     <div id="map_canvas"></div>
     <% if flash[:notice] %>
         <div id="notice"><%= flash[:notice] %></div>
     <% end %>
-    <div id="saerch"><input type="text" id="search_address" value=""/>
-<button onclick="search();">Auf der Karte Suchen</button></div>
-    <div id="content"> <%= yield %> </div>
-</body>
+
+
+<div id="up">
+  <div id="member">
+    <% if current_user %>
+      Moin Moin <%= current_user.name %>
+      <%= link_to "Abmelden", signout_path %>
+    <% else %>
+      <%= link_to "Anmelden mit Facebook", "/auth/facebook" %>
+    <% end %>
+  </div>
+  <div id="search">
+    <input type="text" id="search_address" value=""/>
+    <button onclick="search();">Auf der Karte Suchen</button>
+  </div>
+</div>
 </body>
 </html>
