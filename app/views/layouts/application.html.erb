@@ -5,31 +5,13 @@
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
+    <%= javascript_include_tag "infobox" %>
   <%= csrf_meta_tags %>
       <script type="text/javascript">$(document).ready(function() {
       initialize();
     });</script>
 </head>
 <body>
-
-     <div id="logo"><%= link_to image_tag("/logo.png", :width => "200", :height => "223px"), '/' %>
-      </div>
-     <div id="bottom">
-      <div id="wrapper">
-      <ul id="menu">
-        <li id="button"><%= link_to "BENUTZER", '/user/' %></li>
-        <li id="button"><%= link_to "KARTEN", '/map/' %></li>
-        <li id="button"><%= link_to 'KONTAKT', '/'%></li>
-      </ul>
-      <div id="content"> <%= yield %> </div>
-     </div>
-    </div>
-    <div id="map_canvas"></div>
-    <% if flash[:notice] %>
-        <div id="notice"><%= flash[:notice] %></div>
-    <% end %>
-
-
 <div id="up">
   <div id="member">
     <% if current_user %>
@@ -44,5 +26,20 @@
     <button onclick="search();">Auf der Karte Suchen</button>
   </div>
 </div>
+<div id="logo"><%= link_to image_tag("/logo.png", :width => "200", :height => "223px"), '/' %></div>
+<div id="bottom">
+  <div id="wrapper">
+    <ul id="menu">
+      <li id="button"><%= link_to "BENUTZER", '/user/' %></li>
+      <li id="button"><%= link_to "KARTEN", '/map/' %></li>
+      <li id="button"><%= link_to 'KONTAKT', '/'%></li>
+    </ul>
+    <div id="content"> <%= yield %> </div>
+  </div>
+</div>
+<div id="map_canvas"></div>
+<% if flash[:notice] %>
+  <div id="notice"><%= flash[:notice] %></div>
+<% end %>
 </body>
 </html>
