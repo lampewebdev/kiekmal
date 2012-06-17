@@ -3,7 +3,7 @@
  //var a_javascript_array = new Array(<%= @kname.join(",").html_safe %>);
  var ar = <%= @kname.to_json.html_safe %>
 createeditmaps(ar);
-//savemap();
+savemap();	
 </script>
 
 <div id="dialog-message">
@@ -15,7 +15,7 @@ createeditmaps(ar);
 Map Name: <input id="mapname"type="text" name="mapname" value="" /><br />
 </form>
 Ihre Marker
-<ul id="markerlist">
-</ul>
+<div id="markerlist">
+</div>
 <div id="saveme">speichern</div>
 </div>

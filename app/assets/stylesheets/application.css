@@ -9,6 +9,7 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
+ *= require jquery.ui.all
  */
  @font-face {  
 	font-family: gotham ;  
@@ -42,6 +43,7 @@ A:hover {text-decoration:none;color:#DDD;}
 	height:223px;
 	background-color:white;
 	box-shadow: 0 8px 6px -6px black;
+	z-index: 1;
 }
 #up{
 	position:fixed;
@@ -49,6 +51,7 @@ A:hover {text-decoration:none;color:#DDD;}
 	width:100%;
 	height:30px;
 	background-color:#191436;
+	z-index:1;
 }
 #member{
 	position:relative;
@@ -67,6 +70,7 @@ A:hover {text-decoration:none;color:#DDD;}
 	width:100%;
 	height:131px;
 	background-image: url(/welle.png);
+	z-index: 1;
 }
 #wrapper{
 	width:700px;
