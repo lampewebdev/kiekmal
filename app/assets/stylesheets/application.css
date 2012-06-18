@@ -66,11 +66,19 @@ A:hover {text-decoration:none;color:#DDD;}
 }
 #bottom{
 	position:fixed;
-	bottom:0px;
+	bottom:-40px;
 	width:100%;
 	height:131px;
-	background-image: url(/welle.png);
+	background-image: url(/welle1.png);
 	z-index: 1;
+}
+#welle2{
+	position:fixed;
+	bottom:0px;
+	width:100%;
+	height:44px;
+	background-image: url(/welle2.png);
+	z-index: 2;
 }
 #wrapper{
 	width:700px;

@@ -30,7 +30,7 @@ class MapController < ApplicationController
     @marker = Hash.new;
     tmp.each {|marker|
       @marker[marker.name]=Hash["name",marker.name,
-                                    "lat",marker.lat,
+                                   "lat",marker.lat,
                                     "lng",marker.lng,
                                     "beschreibung",marker.beschreibung,
                                     "kategoriebild",marker.kategorie.bild,
@@ -40,23 +40,23 @@ class MapController < ApplicationController
     session[:markers] = nil
   end
 
-  def getmarker
+  def getmarker 
     @map = Map.new
     @map.user = User.find_by_id(session[:user_id])
-    @map.kategorie = Kategorie.find_by_id(1)
-    @map.name = "test"
+    @map.name = params[:mapname]
     @markers = params[:markers]
     @markers.each do |key,value|     
       m = Marker.new
-      m.name = value[:title]
-      m.lat = value[:lat]
-      m.lng = value[:lng]
-      m.kategorie = Kategorie.find_by_name(value[:kategorie])
+      m.name = value[0]
+      m.kategorie = Kategorie.find_by_name(value[1])
+      m.beschreibung = value[2]
+      m.lat = value[3]
+      m.lng = value[4]
       m.save
+      puts m.new_record?
       @map.markers << m
     end
     @map.save
-    
     if @map.new_record? 
       @map.destroy 
     end

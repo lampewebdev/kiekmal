@@ -88,28 +88,70 @@ function addMarker(location) {
 
 
 //save the marker
-function jsonfiemarker(marker){
-  for(var i=0,len=marker.length; value=marker[i], i<len; i++) {
-    var werte='{"title": "'+ value.getTitle() +'", "lat": "'+ value.getPosition().lat()+'","lng": "'+value.getPosition().lng()+'","kategorie": "'+ $('#katmarker'+i).text().toString() +'"}';
-    var js1 = JSON.parse(werte);
-    var str ='"marker'+i+'" :' + werte;
-    markers.push(str);
-  };
-  mymarker='{"markers":{' + markers + '},"katesmap":"'+ $('#katesmap').val() +'", "mapname":"'+ $('#mapname').val() +'"}'
-  mymarker= JSON.parse(mymarker);
-};
-
 function savemap(){
   $(document).ready(function() {   
+    var data = new Array();
+    var count = 0;
     $("#saveme").click(function () {
+
       $('.group').each(function(index) {
-        alert($(this).find("h3").find("input").val());
-        alert($(this).find("div").find("p").find("select").val());
-        alert($(this).find("div").find("textarea").val());
-      });
+        alert($(this).find("div").find("#lng").text())
+        var tmp = new Array();
+        tmp.push($(this).find("h3").find("input").val());
+        tmp.push($(this).find("div").find("p").find("select").val());
+        tmp.push($(this).find("div").find("textarea").val());
+        tmp.push($(this).find("div").find("#lat").text());
+        tmp.push($(this).find("div").find("#lng").text());
+        data.push(tmp);
+      }); 
+      var mark = JSON.stringify(data);
+      //alert(mark)
+      mname = $("#mapnametext").val();
+      var jso = JSON.parse('{"markers":' + mark +', "mapname":"'+ mname +'"}')
+      //alert(daten);
+      if($('.group').find("h3").find("input").val() != "undefined"){
+        $.ajax({
+          type: "PUT",
+          url: "/map/getmarker/",
+          data : jso,
+          dataType: 'json',
+          async:false,
+          error: function(msg) { alert( "Error:" + msg) },
+          success: function(strData){window.location.replace("/map/show/"+strData.id)}
+        });      
+      }else{
+        alert('Bitte Fuegen sie Punkte hinzu');
+        return false;
+      }
     });
   });
 };
+
+function showmap(marker){
+  var data = JSON.parse(marker);
+  $("#content").append("<div id='mardisplay'></div>")
+  $(document).ready(function() {
+    $.each(data, function() {
+      var pos = new google.maps.LatLng(this.lat,this.lng)
+      var image = new google.maps.MarkerImage(this.markerbild,
+      // This marker is 20 pixels wide by 32 pixels tall.
+      new google.maps.Size(32, 40),
+      // The origin for this image is 0,0.
+      new google.maps.Point(0,0),
+      // The anchor for this image is the base of the flagpole at 0,32.
+      new google.maps.Point(0, 32));
+      marker = new google.maps.Marker({
+        position: pos,
+        map: map,
+        draggable: false,
+        visible: true,
+        icon: image
+      });
+      $('#'+this.name).click(function(){ map.setCenter(pos); });
+    });
+  });
+}
+
 
 //////helper methoden//////
 
@@ -152,6 +194,8 @@ function setMarkerTitle(markerid){
                           '<h3><a href="#"><input id="markertitle" name="title" type="text" size="30" maxlength="30" value="'+ $('#'+markername+'form').val()+'"></a></h3><div>'+
                           '<p>'+ kates +'</p>'+
                           '<textarea id="comments" name="comments" cols="30" rows="5">'+ $('#comments'+markername).val()+'</textarea><br>'+
+                          '<div id="lat" style="display: none;"> '+marker.getPosition().lat() + "</div>"+
+                          '<div id="lng" style="display: none;"> '+marker.getPosition().lng() + "</div>"+
                           '<input style="display:block;z-index:150" type="button" id="deletmarker" value="Loeschen" onclick="deletemarker(kat'+markername+','+markerid +')">'+
                           '</div></div>'
                           ).accordion('destroy').accordion({header: "h3",collapsible: true, active: false }).sortable({header:"h3"});
@@ -160,13 +204,28 @@ function setMarkerTitle(markerid){
   bool="true";
   $('#kates').attr("id","kates"+markername);
   $('#kates'+markername).val(kat)
+
+    $('#kat'+markername).mouseenter(function(){
+      markers[markerid].setAnimation(google.maps.Animation.BOUNCE);
+    }).mouseleave(function(){
+        markers[markerid].setAnimation(null);
+    });
   setTimeout(function(){infowindow.close(map,marker);},50);
   };
 }
-
+function bouncemarker(markerid){
+markers[markerid].setAnimation(google.maps.Animation.BOUNCE);
+}
 function deletemarker(name,markerid){
-  alert(markerid)
   markers[markerid].setMap(null);
   $(name).remove()
   $('#markerlist').accordion('destroy').accordion({header: "h3",collapsible: true, active: false }).sortable({header:"h3"});
+}
+
+function welle(){
+$("#bottom").hover(function(){
+ $(this).stop().animate({"bottom" : "0px"});
+}, function(){
+ $(this).stop().animate({"bottom": "-40"});
+});
 }

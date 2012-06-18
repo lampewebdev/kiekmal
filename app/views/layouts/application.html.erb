@@ -9,6 +9,7 @@
   <%= csrf_meta_tags %>
       <script type="text/javascript">$(document).ready(function() {
       initialize();
+      welle();
     });</script>
 </head>
 <body>
@@ -37,6 +38,7 @@
     <div id="content"> <%= yield %> </div>
   </div>
 </div>
+<div id="welle2"></div>
 <div id="map_canvas"></div>
 <% if flash[:notice] %>
   <div id="notice"><%= flash[:notice] %></div>
