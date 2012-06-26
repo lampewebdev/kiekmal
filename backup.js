@@ -155,7 +155,11 @@ function search() {
                 var loc = results[0].geometry.location;
                 // use loc.lat(), loc.lng()
                 var erg = new google.maps.LatLng(loc.lat(),loc.lng());
-                map.setCenter(erg);
+                //map.panTo(erg);
+                map.zoomIn();
+                map.zoomOut();
+                map.zoomIn();
+                map.zoomIn();
             } 
             else {
                 alert("Not found: " + status); 

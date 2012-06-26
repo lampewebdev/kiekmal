@@ -229,3 +229,38 @@ $("#bottom").hover(function(){
  $(this).stop().animate({"bottom": "-40"});
 });
 }
+
+//Suche 
+var addressField = document.getElementById('search_address');
+var geocoder = new google.maps.Geocoder();
+function search() {
+    geocoder.geocode(
+        {'address': document.getElementById('search_address').value}, 
+        function(results, status) { 
+            if (status == google.maps.GeocoderStatus.OK) { 
+                var loc = results[0].geometry.location;
+                // use loc.lat(), loc.lng()
+                var erg = new google.maps.LatLng(loc.lat(),loc.lng());
+                map.panTo(erg);
+                smoothZoom(map, 19, map.getZoom());
+                //setTimeout("map.setZoom(18)",1000);
+            } 
+            else {
+                alert("Not found: " + status); 
+            } 
+        }
+    );
+};
+
+function smoothZoom (map, max, cnt) {
+    if (cnt >= max) {
+            return;
+        }
+    else {
+        z = google.maps.event.addListener(map, 'zoom_changed', function(event){
+            google.maps.event.removeListener(z);
+            self.smoothZoom(map, max, cnt + 1);
+        });
+        setTimeout(function(){map.setZoom(cnt)}, 80); // 80ms is what I found to work well on my system -- it might not work well on all systems
+    }
+}  
