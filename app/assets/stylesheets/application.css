@@ -9,7 +9,7 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require jquery.ui.all
+ * require jquery.ui.all
  */
  @font-face {  
 	font-family: gotham ;  
@@ -118,4 +118,9 @@ A:hover {text-decoration:none;color:#DDD;}
 	left:50%;
 	margin-left:  -400px;
 	margin-top: -300px;
+}
+.ui-accordion-header{
+	background-image: url(/dr.gif), url(/dr2.gif);
+	background-position: center right, center left;
+	background-repeat: no-repeat;
 }

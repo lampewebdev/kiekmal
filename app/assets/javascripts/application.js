@@ -191,11 +191,11 @@ function setMarkerTitle(markerid){
   marker.setTitle($('#'+markername+'form').val());
   kates2 = kates
   $('#markerlist').append('<div class="group" id=kat'+markername+' >'+
-                          '<h3><a href="#"><input id="markertitle" name="title" type="text" size="30" maxlength="30" value="'+ $('#'+markername+'form').val()+'"></a></h3><div>'+
+                          '<h3><a href="#"><input id="markertitle" name="title" type="text" size="10" maxlength="30" value="'+ $('#'+markername+'form').val()+'"></a></h3><div>'+
                           '<p>'+ kates +'</p>'+
-                          '<textarea id="comments" name="comments" cols="30" rows="5">'+ $('#comments'+markername).val()+'</textarea><br>'+
+                          '<textarea id="comments" name="comments" cols="15" rows="5">'+ $('#comments'+markername).val()+'</textarea><br>'+
                           '<div id="lat" style="display: none;"> '+marker.getPosition().lat() + "</div>"+
-                          '<div id="lng" style="display: none;"> '+marker.getPosition().lng() + "</div>"+
+                          '<div id="lng" style="display: none;"> '+marker.getPosition().lng() +   "</div>"+
                           '<input style="display:block;z-index:150" type="button" id="deletmarker" value="Loeschen" onclick="deletemarker(kat'+markername+','+markerid +')">'+
                           '</div></div>'
                           ).accordion('destroy').accordion({header: "h3",collapsible: true, active: false }).sortable({header:"h3"});
