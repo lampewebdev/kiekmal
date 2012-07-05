@@ -4,8 +4,7 @@ Kmwi::Application.routes.draw do
   get "user/edit"
   get "user/destroy"
   match "user/" => "user#index"
-  get "user/show"
-
+match "user/:id" => 'user#show'
   get "map/create"
   get "map/edit"
   get "map/destroy"

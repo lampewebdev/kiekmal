@@ -1,6 +1,4 @@
-<%= stylesheet_link_tag "map" %>
-
 <% @user.each do |user| %>
-	<%= user.name %>
-	<%= image_tag("http://graph.facebook.com/#{user.uid}/picture/") %>
+	<%= link_to user.name , "/user/"+user.id.to_s %>
+	<%= link_to image_tag("http://graph.facebook.com/#{user.uid}/picture/"), "/user/"+user.id.to_s %>
 <% end %>

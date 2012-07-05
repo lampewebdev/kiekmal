@@ -4,7 +4,8 @@
 //= require jquery.ui.all
 
 
-
+var directionDisplay;
+var directionsService = new google.maps.DirectionsService();
 var map;
 var kates = "";
 var comments = ""
@@ -14,7 +15,6 @@ var markerscount = 0;
 var bool="true";
 var markername = "";
 var infoboxoptions = {
-                
                 disableAutoPan: false
                 ,maxWidth: 0
                 ,pixelOffset: new google.maps.Size(0, -50)
@@ -32,8 +32,9 @@ var infoboxoptions = {
 var infowindow = new InfoBox(infoboxoptions); 
 //init the map for the hole site
 function initialize() {
+  directionsDisplay = new google.maps.DirectionsRenderer();
   var myOptions = {
-    zoom: 14,
+    zoom: 13,
     center: new google.maps.LatLng(53.566822,10.005798),
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     zoomControl: true,
@@ -44,6 +45,7 @@ function initialize() {
     disableDefaultUI:true
   }
   map = new google.maps.Map(document.getElementById("map_canvas"), myOptions)
+  directionsDisplay.setMap(map);
 }
 
 function createeditmaps(kategorie){
@@ -68,7 +70,7 @@ function addMarker(location) {
     marker = new google.maps.Marker({
       position: location,
       map: map,
-      draggable: false,
+      draggable: true,
       visible: true,
      });
   infowindowcontent = '<div id="titleform">'+
@@ -79,7 +81,13 @@ function addMarker(location) {
   infowindow.setContent(infowindowcontent);
   infowindow.open(map,marker);
   google.maps.event.addListener(marker, 'dblclick', function(event) {
-    alert("test")
+    //alert("test")
+  });
+
+  google.maps.event.addListener(marker, 'dragend', function() {
+    $('#kat'+markername).find('#lat').html(""+marker.getPosition().lat());
+    $('#kat'+markername).find('#lng').html(""+marker.getPosition().lng());
+    //alert('kat'+markername);
   });
   markers.push(marker);
   bool="false";
@@ -130,25 +138,36 @@ function savemap(){
 function showmap(marker){
   var data = JSON.parse(marker);
   $("#content").append("<div id='mardisplay'></div>")
+  var length = 0;
+  var waypts = [];
+  for(property in data ){if(data.hasOwnProperty(property)){length++;}}
+  var c = 0;
+  var start;
+  var end;
   $(document).ready(function() {
     $.each(data, function() {
-      var pos = new google.maps.LatLng(this.lat,this.lng)
-      var image = new google.maps.MarkerImage(this.markerbild,
-      // This marker is 20 pixels wide by 32 pixels tall.
-      new google.maps.Size(32, 40),
-      // The origin for this image is 0,0.
-      new google.maps.Point(0,0),
-      // The anchor for this image is the base of the flagpole at 0,32.
-      new google.maps.Point(0, 32));
-      marker = new google.maps.Marker({
-        position: pos,
-        map: map,
-        draggable: false,
-        visible: true,
-        icon: image
-      });
-      $('#'+this.name).click(function(){ map.setCenter(pos); });
-    });
+    if(c==0){start = new google.maps.LatLng(this.lat,this.lng)}
+    else if(c==length-1){end =  new google.maps.LatLng(this.lat,this.lng);}
+    else if(!(c==0)||!(c==length-1)){ 
+      mar = new google.maps.LatLng(this.lat,this.lng);
+      waypts.push({location: mar});
+         //waypts.push(new google.maps.LatLng(this.lat,this.lng));
+    }
+     c++; 
+  });
+  //alert(waypoints[0]);
+ var request = {
+      origin: start,
+      destination: end,
+      waypoints: waypts,
+      //optimizeWaypoints: true,
+      travelMode: google.maps.TravelMode.DRIVING
+  };
+    directionsService.route(request, function(response, status) {
+    if (status == google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(response);
+    }
+  });
   });
 }
 
@@ -188,6 +207,7 @@ function setMarkerTitle(markerid){
           });
         });
   }else{
+  marker.setDraggable(true);
   marker.setTitle($('#'+markername+'form').val());
   kates2 = kates
   $('#markerlist').append('<div class="group" id=kat'+markername+' >'+
@@ -204,7 +224,6 @@ function setMarkerTitle(markerid){
   bool="true";
   $('#kates').attr("id","kates"+markername);
   $('#kates'+markername).val(kat)
-
     $('#kat'+markername).mouseenter(function(){
       markers[markerid].setAnimation(google.maps.Animation.BOUNCE);
     }).mouseleave(function(){
@@ -212,9 +231,6 @@ function setMarkerTitle(markerid){
     });
   setTimeout(function(){infowindow.close(map,marker);},50);
   };
-}
-function bouncemarker(markerid){
-markers[markerid].setAnimation(google.maps.Animation.BOUNCE);
 }
 function deletemarker(name,markerid){
   markers[markerid].setMap(null);
@@ -232,6 +248,7 @@ $("#bottom").hover(function(){
 
 //Suche 
 var addressField = document.getElementById('search_address');
+
 var geocoder = new google.maps.Geocoder();
 function search() {
     geocoder.geocode(
@@ -243,7 +260,7 @@ function search() {
                 var erg = new google.maps.LatLng(loc.lat(),loc.lng());
                 map.panTo(erg);
                 smoothZoom(map, 19, map.getZoom());
-                //setTimeout("map.setZoom(18)",1000);
+               // setTimeout("map.setZoom(18)",1000);
             } 
             else {
                 alert("Not found: " + status); 

@@ -5,41 +5,24 @@
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
-    <%= javascript_include_tag "infobox" %>
+  <%= javascript_include_tag "infobox" %>
   <%= csrf_meta_tags %>
       <script type="text/javascript">$(document).ready(function() {
       initialize();
-      welle();
     });</script>
 </head>
 <body>
-<div id="up">
-  <div id="member">
-    <% if current_user %>
-      Moin Moin <%= current_user.name %>
-      <%= link_to "Abmelden", signout_path %>
-    <% else %>
-      <%= link_to "Anmelden mit Facebook", "/auth/facebook" %>
-    <% end %>
+<div id="left">
+    <div id="lefttop">
+      <%= link_to image_tag("/logo.png", :width => "300", :height => "223px"), '/' %>
+        <%= link_to "BENUTZER", '/user/' %>
+        <%= link_to "KARTEN", '/map/' %>
+        <%= link_to 'KONTAKT', '/'%>
+    </div>
+    <div id="content"><%= yield %></div>
   </div>
-  <div id="search">
-    <input type="text" id="search_address" value=""/>
-    <button onclick="search();">Auf der Karte Suchen</button>
-  </div>
-</div>
-<div id="logo"><%= link_to image_tag("/logo.png", :width => "200", :height => "223px"), '/' %></div>
-<div id="bottom">
-  <div id="wrapper">
-    <ul id="menu">
-      <li id="button"><%= link_to "BENUTZER", '/user/' %></li>
-      <li id="button"><%= link_to "KARTEN", '/map/' %></li>
-      <li id="button"><%= link_to 'KONTAKT', '/'%></li>
-    </ul>
-    <div id="content"> <%= yield %> </div>
-  </div>
-</div>
-<div id="welle2"></div>
-<div id="map_canvas"></div>
+<div id="map_canvas"></div><%= yield :mitte %>
+<div id="bottom"></div>
 <% if flash[:notice] %>
   <div id="notice"><%= flash[:notice] %></div>
 <% end %>

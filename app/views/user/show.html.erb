@@ -1,2 +1,4 @@
-<h1>User#show</h1>
-<p>Find me in app/views/user/show.html.erb</p>
+<%= @user.name %>
+<% @maps.each { |map| %>
+<%= link_to map.name , "/map/show/"+map.id.to_s %><br>
+<% } %>

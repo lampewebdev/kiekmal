@@ -10,5 +10,7 @@ class UserController < ApplicationController
   end
 
   def show
+  	@user = User.find(params[:id])
+  	@maps = Map.find_all_by_user_id(params[:id])
   end
 end

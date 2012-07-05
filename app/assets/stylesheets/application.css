@@ -29,75 +29,39 @@ A:active {text-decoration: none;color:#DDD;}
 A:hover {text-decoration:none;color:#DDD;}
 
 #map_canvas{
-	height:100%;
-	width:100%;
+	height:98%;
+	width:80%;
 	z-index: 0;
+	float: right;
 }
-#logo{
-	position:fixed;
-	margin:0;
-	padding:0;
-	left:13px;
-	bottom:50px;
-	width:210px;
-	height:223px;
-	background-color:white;
-	box-shadow: 0 8px 6px -6px black;
-	z-index: 1;
-}
-#up{
-	position:fixed;
-	top:0px;
-	width:100%;
-	height:30px;
-	background-color:#191436;
-	z-index:1;
-}
-#member{
-	position:relative;
-	width:400px;
-	float:left;
-	text-align:left;
-}
-#search{
-	display: block;
-	text-align:right;
-	float:right;
-}
-#bottom{
-	position:fixed;
-	bottom:-40px;
-	width:100%;
-	height:131px;
-	background-image: url(/welle1.png);
-	z-index: 1;
-}
-#welle2{
-	position:fixed;
-	bottom:0px;
-	width:100%;
-	height:44px;
-	background-image: url(/welle2.png);
-	z-index: 2;
-}
-#wrapper{
-	width:700px;
-	text-align:center;
-	margin: 0px auto;
-}
-#menu{
-	position: fixed;
-	left:40px;
-	width:200px;
-	text-align:left;
+#left{
+	height: 98%;
+	width: 20%;
+	z-index: 0;
 	float: left;
-}
-#content{
-	position:relative;
-	width:400px;
-	float:right;
+	background-image: url(/linksblau.png), white;
+	background-position: center bottom, center top;
 }
 
+#lefttop{
+}
+#mitte{
+	position: fixed;
+	top:50%;
+	left:70%;
+	margin-left: -37%;
+	margin-top: -35%;
+	width: 50%;
+	height: 50%;
+	z-index: 3;
+}
+
+#bottom{
+	clear:both;
+	width: 100%;
+	height: 2%;
+	background-color: #cd5950;
+}
 #notice{
 	position:fixed;
 	margin-left:-105px;
@@ -110,14 +74,6 @@ A:hover {text-decoration:none;color:#DDD;}
 	display: none;
 	z-index: 100;
 	background-color: white;
-}
-
-#mitte{
-	position: fixed;
-	top:50%;
-	left:50%;
-	margin-left:  -400px;
-	margin-top: -300px;
 }
 .ui-accordion-header{
 	background-image: url(/dr.gif), url(/dr2.gif);
