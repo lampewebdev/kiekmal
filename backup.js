@@ -1,3 +1,7 @@
+
+function showmap(marker){
+  var data = JSON.parse(marker);
+  $("#content").append("<div id='mardisplay'></div>")
   $(document).ready(function() {
     $.each(data, function() {
       var pos = new google.maps.LatLng(this.lat,this.lng)
@@ -17,6 +21,31 @@
       });
       $('#'+this.name).click(function(){ map.setCenter(pos); });
     });
+  });
+  });
+
+
+
+
+function showmap(marker){
+  var data = JSON.parse(marker);
+  $("#content").append("<div id='mardisplay'></div>")
+  var length = 0;
+  var waypts = [];
+  for(property in data ){if(data.hasOwnProperty(property)){length++;}}
+  var c = 0;
+  var start;
+  var end;
+  $(document).ready(function() {
+    $.each(data, function() {
+    if(c==0){start = new google.maps.LatLng(this.lat,this.lng)}
+    else if(c==length-1){end =  new google.maps.LatLng(this.lat,this.lng);}
+    else if(!(c==0)||!(c==length-1)){ 
+      mar = new google.maps.LatLng(this.lat,this.lng);
+      waypts.push({location: mar});
+         //waypts.push(new google.maps.LatLng(this.lat,this.lng));
+    }
+     c++; 
   });
 
 

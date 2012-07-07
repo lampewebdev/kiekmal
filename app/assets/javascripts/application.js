@@ -55,9 +55,7 @@ function createeditmaps(kategorie){
 }
 
 function mapeventlistern(){
-    google.maps.event.addListener(map, 'click', function(event) {
-      checkmarkertitle(event.latLng)
-    });
+    
     google.maps.event.addListener(infowindow, 'closeclick',function(event){
       marker.setMap(null);
       bool="true";
@@ -134,39 +132,59 @@ function savemap(){
   });
 };
 
+
 function showmap(marker){
   var data = JSON.parse(marker);
-  $("#content").append("<div id='mardisplay'></div>")
-  var length = 0;
-  var waypts = [];
-  for(property in data ){if(data.hasOwnProperty(property)){length++;}}
-  var c = 0;
-  var start;
-  var end;
-  $(document).ready(function() {
+    $(document).ready(function() {
     $.each(data, function() {
-    if(c==0){start = new google.maps.LatLng(this.lat,this.lng)}
-    else if(c==length-1){end =  new google.maps.LatLng(this.lat,this.lng);}
-    else if(!(c==0)||!(c==length-1)){ 
-      mar = new google.maps.LatLng(this.lat,this.lng);
-      waypts.push({location: mar});
-         //waypts.push(new google.maps.LatLng(this.lat,this.lng));
-    }
-     c++; 
-  });
-  //alert(waypoints[0]);
- var request = {
-      origin: start,
-      destination: end,
-      waypoints: waypts,
-      //optimizeWaypoints: true,
-      travelMode: google.maps.TravelMode.DRIVING
-  };
-    directionsService.route(request, function(response, status) {
-    if (status == google.maps.DirectionsStatus.OK) {
-      directionsDisplay.setDirections(response);
-    }
-  });
+      var pos = new google.maps.LatLng(this.lat,this.lng)
+      var image = new google.maps.MarkerImage(this.markerbild,
+      // This marker is 20 pixels wide by 32 pixels tall.
+      new google.maps.Size(67, 82),
+      // The origin for this image is 0,0.
+      new google.maps.Point(0,0),
+      // The anchor for this image is the base of the flagpole at 0,32.
+      new google.maps.Point(0, 32));
+      marker = new google.maps.Marker({
+        position: pos,
+        map: map,
+        draggable: false,
+        visible: true,
+        icon: image
+      });
+      var infoboxoptions = {
+                disableAutoPan: false
+                ,maxWidth: 0
+                ,pixelOffset: new google.maps.Size(0, -50)
+                ,position: new google.maps.LatLng(this.lat,this.lng)
+                ,zIndex: null
+                ,closeBoxMargin: "-12px 0px"
+                ,boxStyle: { 
+                background: "#272441"
+                  ,opacity: 0.90
+                  ,width: "280px"
+                }
+                ,infoBoxClearance: new google.maps.Size(1, 1)
+                ,isHidden: false
+                ,pane: "floatPane"
+                ,enableEventPropagation: false
+      };
+      var infowindow = new InfoBox(infoboxoptions); 
+      var infocontent = '<div id="infowhie">' +
+                        '<div id="infotitle">' + this.name + 
+                        '<br/>von <a href="/user/'+this.userid+'">'+ this.user + '</a>' +
+                        '<br/>in <a href="/map/show/'+this.mapid+'">'+this.kname+'</a>' +
+                        '</div>'+
+                        '<div id="infobeschreibugn">'+ this.beschreibung + '</div>' +
+                        '<iframe src="http://www.facebook.com/plugins/like.php?href='+ window.location.pathname +'&amp;layout=standard&amp;show_faces=true&amp;width=450&amp;action=recommend&amp;font=arial&amp;colorscheme=light&amp;height=80" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:80px;" allowTransparency="true"></iframe>'
+                        '</div>'
+
+      infowindow.setContent(infocontent);
+      //
+      google.maps.event.addListener(marker, 'click', function(event) {
+        infowindow.open(map,marker);
+      });
+    });
   });
 }
 
@@ -194,6 +212,16 @@ function checkmarkertitle(el){
         });
       }
 }
+
+function usermenu(kat){
+  $('#content').append('<div id="kattitle">Kategorien Filter</div>');
+var data = JSON.parse(kat);
+  $.each(data, function() {
+    $('#content').append(
+      '<h3><a href="#">'+ this.name + '</a></h3><div></div>'
+      );
+  });
+};
 
 function setMarkerTitle(markerid){
   kat = $('#kates').val()

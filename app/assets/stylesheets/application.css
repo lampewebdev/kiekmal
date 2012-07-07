@@ -92,6 +92,67 @@ a#current{color: #272441}
     -o-transform:rotate(30deg);
 }
 
+#content{
+	padding-top: 30px;
+}
+#kattitle {
+	margin: 0 auto;
+	width: 250px;
+	background-color: #272441;
+	color:white;
+	padding-bottom: 2px;
+}
+#katmenu{
+	margin: 0 auto;
+	list-style-type:none;
+	width:245px;
+	padding-left: 0;
+	text-align: left;
+	background-color: white;
+	padding-bottom: 10px;
+}
+.katinner{
+	border: 2px solid #465275;
+	color: #465275;
+	padding: 3px;
+	height: 42px;
+}
+
+
+#essen:hover{
+	background-color: #6fbdac;
+}
+#trinken:hover{
+	background-color: #73a0bc;
+}
+#shoppen:hover{
+	background-color: #e6d581;
+}
+#kultur:hover{
+	background-color: #b4ab7f;
+}
+#sport:hover{
+	background-color: #90bc83;
+}
+#sonstiges:hover{
+	background-color: #5a72b7;
+}
+#katinnertext {
+	padding-top: 10px;
+	padding-left: 20px;
+	float: left;
+}
+#katmenu li{
+	padding-top: 15px;
+	padding-left:15px;
+	padding-right: 15px;
+}
+#katmenu img{
+	float:left;
+	margin: 0px;
+	padding: 0px;
+}
+
 #mitte{
 	position: fixed;
 	top:50%;
@@ -122,9 +183,38 @@ a#current{color: #272441}
 	z-index: 100;
 	background-color: white;
 }
+
+#essen{
+
+}
+
+
+
 .ui-accordion-header{
 	background-image: url(/dr.gif), url(/dr2.gif);
 	background-position: center right, center left;
 	background-repeat: no-repeat;
 }
 
+#infowhie{
+	background-color: white;	
+	margin-top: 4px;
+	padding-top: 10px;
+	margin-left: 4px;
+	margin-right: 4px;
+	margin-bottom: 10px;
+	min-height: 10px;
+}
+
+#infotitle{
+	padding-left: 14px;
+	margin-left: 4px;
+	margin-right: 4px;
+	margin-bottom: 10px;
+	background-color: white;
+	border: 2px solid #465275;
+	font-family: lecker;
+	font-size: 20px;
+	text-align: left;
+	color: #465275;
+}

@@ -75,6 +75,7 @@ GEM
     omniauth-oauth2 (1.0.2)
       oauth2 (~> 0.6.0)
       omniauth (~> 1.0)
+    pg (0.14.0)
     polyglot (0.3.3)
     rack (1.4.1)
     rack-cache (1.2)
@@ -132,6 +133,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   omniauth-facebook
+  pg
   rails (= 3.2.3)
   sass-rails (~> 3.2.3)
   sqlite3

@@ -1,7 +1,9 @@
+
 <script type="text/javascript">
 var mar = '<%= @marker.to_json.html_safe %>'
 showmap(mar)
 </script>
+
 <div id="kattitle">Kategorie</div>
 <ul id="katmenu">
 <% @kat.each do |kat| %>
@@ -13,3 +15,8 @@ showmap(mar)
 <% end %>
 </ul>
 </div>
+<style type="text/css">
+#kultur{
+	background-color: #b4ab7f;
+}
+</style>

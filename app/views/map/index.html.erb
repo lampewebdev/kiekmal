@@ -4,8 +4,8 @@ var mar = '<%= @marker.to_json.html_safe %>'
 showmap(mar)
 </script>
 
-<%# if !(session[:user_id]==nil) %> <br>
+<% if session[:user_id]!=nil %> <br>
 <%= link_to 'Share on Facebook', '#', :class => "fb_share"  %>
 <%= facebook_share_once %>
 <p><%= link_to "Neue Karte Anlegen", "/map/create/" %> </p>
-<%# end %>
+<% end %>
