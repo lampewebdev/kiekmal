@@ -3,7 +3,6 @@
 //= require jquery_ujs
 //= require jquery.ui.all
 
-
 var directionDisplay;
 var directionsService = new google.maps.DirectionsService();
 var map;

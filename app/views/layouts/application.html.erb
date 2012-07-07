@@ -14,14 +14,26 @@
 <body>
 <div id="left">
     <div id="lefttop">
-      <%= link_to image_tag("/logo.png", :width => "300", :height => "223px"), '/' %>
-        <%= link_to "BENUTZER", '/user/' %>
-        <%= link_to "KARTEN", '/map/' %>
-        <%= link_to 'KONTAKT', '/'%>
+      <div id="login">
+    <% if current_user %>
+      <%= link_to image_tag("/logout.png") , signout_path %>
+    <% else %>
+      <%= link_to image_tag("/login.png") , "/auth/facebook" %>
+    <% end %>
+  </div>
+  <div id="logo">
+      <%= link_to image_tag("/logo.png"), '/' %>
+   </div>
     </div>
+        <%= link_to 'KATEGORIEN', kategorie_path, :id => cp(kategorie_path) ? "current" : "" %>
+        <%= link_to "BENUTZER", user_path, :id => cp(user_path) ? "current" : "" %>
+        <%= link_to "KARTEN", map_path, :id => cp(map_path) ? "current" : "" %>
+        
     <div id="content"><%= yield %></div>
   </div>
-<div id="map_canvas"></div><%= yield :mitte %>
+  <%= yield :mitte %>
+<div id="map_canvas"></div>
+
 <div id="bottom"></div>
 <% if flash[:notice] %>
   <div id="notice"><%= flash[:notice] %></div>
