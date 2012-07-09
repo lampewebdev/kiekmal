@@ -9,14 +9,16 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- * require jquery.ui.all
+ *= require_tree .
  */
- @font-face {  
-	font-family: gotham ;  
-	src: url( /gotham.otf )  format("opentype"); 
+ @font-face {   
 	font-family: lecker ;
-	src: url(/LeckerliOne-Regular.ttf); 
-} 
+	src: url(/lecker.ttf); 
+}
+@font-face{
+		font-family: git ;
+	src: url(/georgia.ttf); 
+}
 html,body{
 	width:100%;
 	height:100%;
@@ -29,13 +31,15 @@ a:link {text-decoration: none; color:#d4e1f0;}
 a:visited {text-decoration: none; color:#d4e1f0;}
 a:active {text-decoration: none;color:#d4e1f0;}
 a:hover {text-decoration:none;color:#d4e1f0;}
-a#current{color: #272441}
+a#current{color: white}
 
 
-
+#menu a{
+	font-family: lecker;
+}
 
 #map_canvas{
-	min-height: 98%;
+	min-height: 100%;
 	z-index: 0;
 }
 #left{
@@ -95,6 +99,15 @@ a#current{color: #272441}
 #content{
 	padding-top: 30px;
 }
+
+#form1{
+		margin: 0 auto;
+	width: 250px;
+	background-color: #272441;
+	color:white;
+	padding-bottom: 2px;
+}
+
 #kattitle {
 	margin: 0 auto;
 	width: 250px;
@@ -112,7 +125,7 @@ a#current{color: #272441}
 	padding-bottom: 10px;
 }
 .katinner{
-	border: 2px solid #465275;
+	border: 5px solid #465275;
 	color: #465275;
 	padding: 3px;
 	height: 42px;
@@ -141,6 +154,20 @@ a#current{color: #272441}
 	padding-top: 10px;
 	padding-left: 20px;
 	float: left;
+
+}
+#nametext {
+
+}
+#nametext a{
+	color: #465275;
+	padding:0px;
+	margin: 0px;
+	padding-top: 15px;
+	padding-left: 10px;
+	float: left;
+	font-family: git;
+	font-size: 10pt;
 }
 #katmenu li{
 	padding-top: 15px;
@@ -165,10 +192,20 @@ a#current{color: #272441}
 }
 
 #bottom{
-	clear:both;
+	position: fixed;
+	bottom:0px;
+	left: 0px;
 	width: 100%;
-	height: 2%;
+	height: 20px;
 	background-color: #cd5950;
+	z-index: 3;
+}
+
+#create{
+	position: fixed;
+	bottom:-5px;
+	right:1%;
+	z-index: 4;
 }
 #notice{
 	position:fixed;
@@ -217,4 +254,31 @@ a#current{color: #272441}
 	font-size: 20px;
 	text-align: left;
 	color: #465275;
+}
+
+.ui-icon-circle-arrow-e{
+	padding:0px;
+	padding-left:240px;
+	background-position: 200px;
+	width: 9px;
+	height: 15px;
+  background-image: url(/p1.png);
+  z-index: 5;
+}
+.ui-icon-circle-arrow-s{
+	padding:0px;
+	padding-left:240px;
+	background-position: 200px;
+	width: 9px;
+	height: 15px;
+  background-image: url(/p2.png);
+  z-index: 5;
+}
+
+#saveme{
+	padding-top: 140px;
+}
+.ui-accordion-content a{
+
+	color:#465275;
 }

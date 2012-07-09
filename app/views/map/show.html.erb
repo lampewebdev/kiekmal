@@ -3,9 +3,34 @@
 var mar = '<%= @marker.to_json.html_safe %>'
 showmap(mar)
 </script>
+<div id="kattitle"><%= @mapname %></div>
+<ul id="katmenu">
 <% @marker.each do |k,v| %>
-<div id=<%= k %> >
-			<%=  image_tag v["kategoriebild"].html_safe,:height => '32', :width => '32' %>
+<div id=<%= k %> class="katinner" style="width:215px;">
+			<%=  image_tag v["kategoriebild"].html_safe %>
+			<div id="katinnertext"><%= v["name"]%></div>
 </div>
-
 <% end %>
+</ul>
+</div>
+<style type="text/css">
+#kattitle{
+
+}
+#katmenu{
+
+	background-color: white;
+	padding: 0;
+	padding-top: 10px;
+	padding-bottom: 1px;
+	margin: 0 auto;
+	display: block;
+	width: 245px;	
+}
+.katinner{
+	width:215px;
+	margin: 0 auto;
+	padding:3px;
+	margin-bottom: 20px;
+}
+</style>

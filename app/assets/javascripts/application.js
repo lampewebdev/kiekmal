@@ -1,7 +1,7 @@
 //= require_tree .
-//= require jquery
-//= require jquery_ujs
-//= require jquery.ui.all
+// require jquery
+// require jquery_ujs
+// require jquery.ui.all
 
 var directionDisplay;
 var directionsService = new google.maps.DirectionsService();
@@ -18,11 +18,12 @@ var infoboxoptions = {
                 ,maxWidth: 0
                 ,pixelOffset: new google.maps.Size(0, -50)
                 ,zIndex: null
+                ,closeBoxMargin: "-12px 0px"
                 ,boxStyle: { 
-                  background: "#fff no-repeat"
+                background: "#272441"
                   ,opacity: 0.90
                   ,width: "280px"
-                 }
+                }
                 ,infoBoxClearance: new google.maps.Size(1, 1)
                 ,isHidden: false
                 ,pane: "floatPane"
@@ -55,7 +56,9 @@ function createeditmaps(kategorie){
 }
 
 function mapeventlistern(){
-    
+        google.maps.event.addListener(map, 'click', function(event) {
+      checkmarkertitle(event.latLng)
+    });
     google.maps.event.addListener(infowindow, 'closeclick',function(event){
       marker.setMap(null);
       bool="true";
@@ -64,17 +67,29 @@ function mapeventlistern(){
 }
 function addMarker(location) {
   markername = "marker"+markerscount
+
+      var image = new google.maps.MarkerImage("/blanko.png",
+      // This marker is 20 pixels wide by 32 pixels tall.
+      new google.maps.Size(67, 82),
+      // The origin for this image is 0,0.
+      new google.maps.Point(0,0),
+      // The anchor for this image is the base of the flagpole at 0,32.
+      new google.maps.Point(0, 32)
+      );
     marker = new google.maps.Marker({
       position: location,
       map: map,
       draggable: true,
       visible: true,
+      icon: image
      });
   infowindowcontent = '<div id="titleform">'+
-                      '<form> Title: <br><input id="'+markername+'form" name="title" type="text" size="30" maxlength="30">'+kates+
-                      '<textarea id="comments'+markername+'" name="comments" cols="30" rows="5">Enter your comments here...</textarea><br>'+
-                      '<input style="display:block;z-index:150" type="button" id="setmarkertitle" value="Speichern" onclick="setMarkerTitle('+markerscount+')">'+
-                      '</form></div>';
+                      '<div id="boxup"><div id="boxup2"' + 
+                      '<form id="formbox"><input id="'+markername+'form" name="title" value="Name" type="text" size="30" maxlength="30">Kategorien: '+kates+
+                      '</div></div><div id="boxdown">' +
+                      '<textarea id="comments'+markername+'" class="commentsbox" name="comments" cols="30" rows="5">Beschreibung</textarea><br>'+
+                      '<input style="display:block;z-index:150" type="button" id="setmarkertitle" value="OK" onclick="setMarkerTitle('+markerscount+')">'+
+                      '</form></div></div>';
   infowindow.setContent(infowindowcontent);
   infowindow.open(map,marker);
   google.maps.event.addListener(marker, 'dblclick', function(event) {
@@ -100,10 +115,11 @@ function savemap(){
     $("#saveme").click(function () {
 
       $('.group').each(function(index) {
-        alert($(this).find("div").find("#lng").text())
+        //alert($(this).find("div").find("#lng").text())
         var tmp = new Array();
+        //alert($(this).find("div").find("select").val());
         tmp.push($(this).find("h3").find("input").val());
-        tmp.push($(this).find("div").find("p").find("select").val());
+        tmp.push($(this).find("div").find("select").val());
         tmp.push($(this).find("div").find("textarea").val());
         tmp.push($(this).find("div").find("#lat").text());
         tmp.push($(this).find("div").find("#lng").text());
@@ -113,7 +129,7 @@ function savemap(){
       //alert(mark)
       mname = $("#mapnametext").val();
       var jso = JSON.parse('{"markers":' + mark +', "mapname":"'+ mname +'"}')
-      //alert(daten);
+      //alert(jso);
       if($('.group').find("h3").find("input").val() != "undefined"){
         $.ajax({
           type: "PUT",
@@ -135,6 +151,7 @@ function savemap(){
 
 function showmap(marker){
   var data = JSON.parse(marker);
+  var c = 0;
     $(document).ready(function() {
     $.each(data, function() {
       var pos = new google.maps.LatLng(this.lat,this.lng)
@@ -152,11 +169,12 @@ function showmap(marker){
         visible: true,
         icon: image
       });
-      var infoboxoptions = {
+      var arr =  new Array();
+      var infoboxoptions  = {
                 disableAutoPan: false
                 ,maxWidth: 0
                 ,pixelOffset: new google.maps.Size(0, -50)
-                ,position: new google.maps.LatLng(this.lat,this.lng)
+                ,position: pos
                 ,zIndex: null
                 ,closeBoxMargin: "-12px 0px"
                 ,boxStyle: { 
@@ -169,7 +187,8 @@ function showmap(marker){
                 ,pane: "floatPane"
                 ,enableEventPropagation: false
       };
-      var infowindow = new InfoBox(infoboxoptions); 
+      arr.push(infoboxoptions);
+      var infowindow = new InfoBox(arr.pop()); 
       var infocontent = '<div id="infowhie">' +
                         '<div id="infotitle">' + this.name + 
                         '<br/>von <a href="/user/'+this.userid+'">'+ this.user + '</a>' +
@@ -238,14 +257,14 @@ function setMarkerTitle(markerid){
   marker.setTitle($('#'+markername+'form').val());
   kates2 = kates
   $('#markerlist').append('<div class="group" id=kat'+markername+' >'+
-                          '<h3><a href="#"><input id="markertitle" name="title" type="text" size="10" maxlength="30" value="'+ $('#'+markername+'form').val()+'"></a></h3><div>'+
-                          '<p>'+ kates +'</p>'+
-                          '<textarea id="comments" name="comments" cols="15" rows="5">'+ $('#comments'+markername).val()+'</textarea><br>'+
+                          '<h3><a href="#">Marker Name: <input id="markertitle" name="title" type="text" size="10" maxlength="30" value="'+ $('#'+markername+'form').val()+'"></a></h3><div>'+
+                          ''+ kates +''+
+                          '<textarea id="comments" style="width:200px;height:50px;" name="comments" cols="10" rows="5">'+ $('#comments'+markername).val()+'</textarea><br>'+
                           '<div id="lat" style="display: none;"> '+marker.getPosition().lat() + "</div>"+
                           '<div id="lng" style="display: none;"> '+marker.getPosition().lng() +   "</div>"+
                           '<input style="display:block;z-index:150" type="button" id="deletmarker" value="Loeschen" onclick="deletemarker(kat'+markername+','+markerid +')">'+
                           '</div></div>'
-                          ).accordion('destroy').accordion({header: "h3",collapsible: true, active: false }).sortable({header:"h3"});
+                          ).accordion('destroy').accordion({header: "h3",collapsible: true, active: false,navigation: true ,autoHeight: false }).sortable({header:"h3"});
   $('#setmarkertitle').attr('onclick','').unbind('click');
   $('#setmarkertitle').css("color","grey");
   bool="true";

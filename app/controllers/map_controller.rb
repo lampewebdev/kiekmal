@@ -1,4 +1,5 @@
 class MapController < ApplicationController
+  skip_before_filter  :verify_authenticity_token
   def create
     kat = Kategorie.all
     @kname = Array.new
@@ -12,6 +13,7 @@ class MapController < ApplicationController
   end
 
   def index
+    @map = Map.order("RANDOM()").limit(5)
     tmp = Marker.order("RANDOM()").limit(20)
     @marker = Hash.new;
     tmp.each {|marker|
@@ -28,14 +30,25 @@ class MapController < ApplicationController
   def show
     tmp = Map.find(params[:id]).markers
     @marker = Hash.new;
-    tmp.each {|marker|
-      @marker[marker.name]=Hash["name",marker.name,
-                                   "lat",marker.lat,
+    @mapname = Map.find(params[:id]).name
+tmp.each {|marker|
+    mapid = Map.find(marker.map_id).id
+    userid = User.find(Map.find(marker.map_id).user_id).id
+    user = User.find(Map.find(marker.map_id).user_id).name
+    kartename = Map.find(marker.map_id).name
+
+    @marker[marker.name]=Hash["name",marker.name,
+                                    "lat",marker.lat,
                                     "lng",marker.lng,
                                     "beschreibung",marker.beschreibung,
                                     "kategoriebild",marker.kategorie.bild,
                                     "markerbild",marker.kategorie.markerbild,
-                                    "kategoriename",marker.kategorie.name]
+                                    "kategoriename",marker.kategorie.name,
+                                    "user", user,
+                                    "kname", kartename,
+                                    "mapid", mapid,
+                                    "userid", userid
+                                  ]
     }
     session[:markers] = nil
   end
@@ -53,13 +66,14 @@ class MapController < ApplicationController
       m.lat = value[3]
       m.lng = value[4]
       m.save
-      puts m.new_record?
       @map.markers << m
     end
+    puts @map.user
     @map.save
     if @map.new_record? 
       @map.destroy 
     end
+    
     mappath =  "map/show/#{Map.find_by_user_id(session[:user_id]).id}"
     render :json => @map
   end

@@ -6,7 +6,6 @@
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= javascript_include_tag "infobox" %>
-  <%= csrf_meta_tags %>
       <script type="text/javascript">$(document).ready(function() {
       initialize();
     });</script>
@@ -18,22 +17,28 @@
     <% if current_user %>
       <%= link_to image_tag("/logout.png") , signout_path %>
     <% else %>
-      <%= link_to image_tag("/login.png") , "/auth/facebook" %>
+      <%= link_to image_tag("/login.png") , "/auth/facebook", :popup => ['new_window_name', 'height=300,width=600'] %>
     <% end %>
   </div>
   <div id="logo">
       <%= link_to image_tag("/logo.png"), '/' %>
    </div>
     </div>
-        <%= link_to 'KATEGORIEN', kategorie_path, :id => cp(kategorie_path) ? "current" : "" %>
-        <%= link_to "BENUTZER", user_path, :id => cp(user_path) ? "current" : "" %>
-        <%= link_to "KARTEN", map_path, :id => cp(map_path) ? "current" : "" %>  
+    <div id="menu">
+        <%= link_to 'Kategorien', kategorie_path, :id => cp(kategorie_path) ? "current" : "" %>
+        <%= link_to "Benutzer", user_path, :id => cp(user_path) ? "current" : "" %>
+        <%= link_to "Karten", map_path, :id => cp(map_path) ? "current" : "" %>  
+    </div>
     <div id="content"><%= yield %></div>
   </div>
   <%= yield :mitte %>
 <div id="map_canvas"></div>
 
 <div id="bottom"></div>
+    <% if(request.fullpath.include?("/create")) %>
+    <% elsif current_user %>
+    <div id="create"> <%= link_to image_tag("/neueKarte.png") , "/map/create/" %> </div>
+    <% end %>
 <% if flash[:notice] %>
   <div id="notice"><%= flash[:notice] %></div>
 <% end %>

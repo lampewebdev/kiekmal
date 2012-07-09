@@ -12,10 +12,82 @@ savemap();
 </div>
 <div id="directionsPanel">
 <form id="form1">
-Map Name: <input id="mapnametext" type="text" name="mapname" value="test" /><br />
+Karten Name: <input id="mapnametext" size="17" maxlength="30" type="text" name="mapname" value="Ihre Kiek Mal Karte" /><br />
 </form>
-Ihre Marker
 <div id="markerlist">
 </div>
-<div id="saveme">speichern</div>
+<div id="saveme"><%= image_tag("/speichern.jpg") %></div>
 </div>
+
+<style type="text/css">
+#directionsPanel{
+	width: 250px;
+	margin: 0px auto;
+}
+textarea {
+	display: block;
+	margin: 0px auto;
+	width: 246px;
+	border: 2px solid #637CA2;
+}
+#markerlist{
+		width: 250px;
+	margin: 0px auto;
+}
+.ui-accordion-content{
+padding-bottom: 100px;
+margin: 0px;
+}
+.ui-accordion-header{
+padding: 0px;
+margin: 0px;
+}
+.ui-accordion .ui-accordion-header a{
+	display: block;
+	float: left;
+	text-align: left;
+	width: 250px;
+	padding: 0px;
+	margin:0 auto;
+}
+#formbox{
+	display:block;
+	margin:0 auto;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	width:240px;
+	
+	color:#191436;
+	background-color: red;
+}
+#boxup{
+	display: block;
+	margin: 0 auto;
+	margin-top: 5px;
+	width: 260px;
+	border: 5px solid white;
+	background-color: white;
+}
+#boxup2{
+	display: block;
+	margin: 0 auto;
+	margin-top: 5px;
+	width: 250px;
+	border: 2px solid #637CA2;
+	background-olor: white;
+}
+#boxdown{
+	display: block;
+	margin: 0 auto;
+	margin-top: 0px;
+	width: 260px;
+	border: 5px solid white;
+	background-color: white;
+	margin-bottom: 5px;
+}
+.commentsbox{
+	display: block;
+	padding-top: 15px;
+}
+
+</style>

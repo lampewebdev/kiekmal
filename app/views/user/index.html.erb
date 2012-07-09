@@ -1,4 +1,79 @@
-<% @user.each do |user| %>
-	<%= link_to user.name , "/user/"+user.id.to_s %>
-	<%= link_to image_tag("http://graph.facebook.com/#{user.uid}/picture/"), "/user/"+user.id.to_s %>
-<% end %>
+<div id="tabs">
+<ul>
+<li><a href="#tabs-1">Aktivste</a></li>
+<li><a href="#tabs-2">Freunde</a></li> 
+<li><a href="#tabs-3">Neuste</a></li>
+</ul>
+<div id="tabs-1">
+	<div id="acc1">
+	<% @user.each do |user| %>
+	 <h3><a href="#">
+		<%= link_to image_tag("http://graph.facebook.com/#{user.uid}/picture/"), "/user/"+user.id.to_s %>
+		<div id="nametext"> <%= link_to user.name , "/user/"+user.id.to_s %>
+		</a></h3>
+		<div>
+			<% maps = Map.find_all_by_user_id(user.id)	%>
+			<% maps.each do |map| %>
+			<%= link_to map.name, "/map/show/"+map.id.to_s %></br>
+			<% end %>
+		</div>	
+	<% end %>
+	</div>
+ </div>	
+<div id="tabs-2">
+		<div id="acc2">
+	<% @user.each do |user| %>
+	 <h3><a href="#">
+		<%= link_to image_tag("http://graph.facebook.com/#{user.uid}/picture/"), "/user/"+user.id.to_s %>
+		<%= link_to user.name , "/user/"+user.id.to_s %>
+		</a></h3>
+		<div>
+			<% maps = Map.find_all_by_user_id(user.id)	%>
+			<% maps.each do |map| %>
+			<%= map.name %>
+			<% end %>
+		</div>	
+	<% end %>
+	</div>
+</div>
+<div id="tabs-3">
+		<div id="acc3">
+	<% @user.each do |user| %>
+	 <h3><a href="#">
+		<%= link_to image_tag("http://graph.facebook.com/#{user.uid}/picture/"), "/user/"+user.id.to_s %>
+		<%= link_to user.name , "/user/"+user.id.to_s %>
+		</a></h3>
+		<div>
+			<% maps = Map.find_all_by_user_id(user.id)	%>
+			<% maps.each do |map| %>
+			<%= map.name %>
+			<% end %>
+		</div>	
+	<% end %>
+	</div>
+</div>	
+</div>
+
+<style type="text/css">
+.ui-accordion-content{
+	padding-bottom: 100px;
+}
+</style>
+<script type="text/javascript">
+jQuery(document).ready( 
+    function(){         
+    			var icons = {
+			header: "ui-icon-circle-arrow-e",
+			headerSelected: "ui-icon-circle-arrow-s"
+		};
+        $("#acc1").accordion({header: "h3",
+        											collapsible: true, 
+        											active: true,
+        											autoHeight: true,
+        											icons: icons});
+        $("#acc2").accordion({header: "h3",collapsible: true, active: false });
+        $("#acc3").accordion({header: "h3",collapsible: true, active: false });
+    		$( "#tabs" ).tabs();
+		}
+); 
+</script>

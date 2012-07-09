@@ -3,9 +3,39 @@
 var mar = '<%= @marker.to_json.html_safe %>'
 showmap(mar)
 </script>
+<div id="kattitle">Karten</div>
+<div id="katmenu">
+	<% @map.each do |map| %>
+	<div class="katinner" >
+		<a href=<%="/map/show/"+map.id.to_s%>>
+	 	<% l = Kategorie.find(Marker.find_by_map_id(map.id.to_s).kategorie_id).bild %>
+	 	<%= image_tag("#{l}") %>
+	 	<div id="katinnertext"><%= map.name %></div>
+		</a>
+	</div>	
+	<% end %>
+	</div>
+ </div>	
+<style type="text/css">
+#katmenu{
+	width: 250px;
+	display: block;
+	background-color: white;
+	padding-top:20px;
+}
+.katinner{
+	color:#465275;
+	margin: 0 auto;
+	display: block;
+	width: 230px;
+	background-color: white;
+	margin-bottom: 10px;	
+}
+.katinner a{
+	color:#465275;
+	display: block;
+height: 100%;
+width: 100%;
+}
 
-<% if session[:user_id]!=nil %> <br>
-<%= link_to 'Share on Facebook', '#', :class => "fb_share"  %>
-<%= facebook_share_once %>
-<p><%= link_to "Neue Karte Anlegen", "/map/create/" %> </p>
-<% end %>
+</style>
